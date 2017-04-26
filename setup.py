@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-from pytgasu import __version__
+from pytgasu import __version__, __description__
 
 here = path.abspath(path.dirname(__file__))
 
@@ -20,7 +20,7 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version=__version__,
 
-    description='An application automating upload of Telegram sticker pack',
+    description=__description__,
     long_description=long_description,
 
     # The project's main homepage.
