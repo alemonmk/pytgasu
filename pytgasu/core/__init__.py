@@ -1,1 +1,1 @@
-from .uploader import PackUploader
+from .uploader import SetUploader

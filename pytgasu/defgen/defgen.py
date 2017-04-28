@@ -1,6 +1,3 @@
-class PackDefGenerator:
-    def __init__(self, pack_dirs):
-        pass
-
-    def run(self):
+class SetDefGenerator:
+    def __init__(self, set_dirs):
         pass

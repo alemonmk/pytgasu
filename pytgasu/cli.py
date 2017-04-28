@@ -14,10 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from pathlib import Path
+
 import click
-from os import path
-from core import PackUploader
-from defgen import PackDefGenerator
+
+from core import SetUploader
+from defgen import SetDefGenerator
 
 
 @click.group()
@@ -26,40 +28,37 @@ def cli():
     pass
 
 
-@cli.command(short_help='Upload sticker packs to Telegram.')
-@click.option('--sub', '/sub', is_flag=True,  help='Subscribe to created pack(s).')
-@click.argument('packs', nargs=-1)
-def upload(packs, subscribe):
-    """Upload specific sticker packs to Telegram.
+@cli.command(short_help='Upload sticker sets to Telegram.')
+@click.option('--sub', '/sub', is_flag=True,  help='Subscribe to created set(s).')
+@click.argument('paths', nargs=-1)
+def upload(paths, subscribe):
+    """Upload sticker sets to Telegram.
     
     \b
     Takes paths of:
-        1. directories with a .spd (sticker pack definitions) file, or
-        2. .spd files themselves
+        1. directories with a .ssd (sticker set definitions) file, or
+        2. .ssd files themselves
     as arguments.
     """
-    # packs can be a path to sticker directory or sticker definition file
     # Looks like I have to check if the path exist as click doesn't do dynamic validation
-    _packs = list(packs)
-    for _path in _packs:
-        if not path.exists(_path):
-            print("{} does not exist, ignoring!".format(_path))
-            _packs.remove(_path)
+    _paths = [p for p in paths if Path(p).exists()]
+    for nep in set(paths) - set(_paths):
+        print("{} does not exist, ignoring!" % nep)
 
-    PackUploader(_packs, subscribe).upload()
+    SetUploader(_paths, subscribe)
 
 
 @cli.command()
 @click.argument(
-    'packs', nargs=-1,
+    'sets', nargs=-1,
     type=click.Path(exists=True, file_okay=False, writable=True)
 )
-def defgen(packs):
-    """Generate sticker pack definition.
+def defgen(sets):
+    """Generate sticker set definition.
     
     Take any paths of directory as arguments.
     """
-    PackDefGenerator(packs).run()
+    SetDefGenerator(sets)
 
 if __name__ == "__main__":
     cli()
