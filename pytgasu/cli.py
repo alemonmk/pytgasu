@@ -39,7 +39,7 @@ def upload(paths, s):
         1. directories with a .ssd (sticker set definitions) file, or
         2. .ssd files themselves
     """
-    SetUploader(paths, s)
+    SetUploader(paths).upload(s)
 
 
 @cli.command(short_help=CLI_SHELP_DEFGEN_COMMAND)
