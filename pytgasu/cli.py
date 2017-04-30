@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # pytgasu - Automating creation of Telegram sticker packs
 # Copyright (C) 2017 Lemon Lam <almk@rmntn.net>
 #
