@@ -33,6 +33,10 @@ from strings import *
 
 class SetUploader:
     _telegram_api_id, _telegram_api_hash = 173590, "9b05a9d53a77019aa1d615f27776e60f"
+    # it only talks to @Stickers, so just hardcode it
+    # invoke(ResolveUsernameRequest(username='Stickers')) returns
+    #   contacts.resolvedPeer = \
+    #       (..., users=[(..., id=429000, access_hash=9143715803499997149, username=Stickers, ...)])
     _stickersbot = InputPeerUser(user_id=429000, access_hash=9143715803499997149)
 
     def __init__(self, set_paths):
@@ -40,7 +44,6 @@ class SetUploader:
         Log in to Telegram and start uploading.
         
         :param set_paths: See the docstring of `cli.upload()`
-        :param subscribe: 
         """
         # TODO: strip Telethon to avoid too much implicit import
         self._TC = TelegramClient(
@@ -70,10 +73,6 @@ class SetUploader:
                         raise e
 
         self._stickersets = self._parse_set_defs(set_paths)
-        # it only talks to @Stickers, so just hardcode it
-        # invoke(ResolveUsernameRequest(username='Stickers')) returns
-        #   contacts.resolvedPeer = \
-        #       (..., users=[(..., id=429000, access_hash=9143715803499997149, username=Stickers, ...)])
 
     def upload(self, subscribe=False):
         if len(self._stickersets):
