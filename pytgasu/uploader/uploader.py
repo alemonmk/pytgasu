@@ -90,14 +90,14 @@ class SetUploader:
         :param defpaths: See ``set_paths`` of ``__init__()``
         :return: A list of sticker set tuples. Can be empty.
         """
-        sets = list()
+        sticker_sets = list()
         for _setpath in defpaths:
             fp = Path(_setpath)
             set_def_file = fp if not fp.is_dir() and fp.suffix == '.ssd' else fp.glob('*.ssd').pop()
             set_def_tuple = defparse.parse(set_def_file)
             if set_def_tuple:
-                sets.append(set_def_tuple)
-        return sets
+                sticker_sets.append(set_def_tuple)
+        return sticker_sets
 
     def _do_uploads(self, subscribe):
         self._sticker_bot_cmd(SendMessageRequest, message='/cancel')
