@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# module uploader
 PROMPT_ON_FIRST_LAUNCH = "It's your first run of this program, please login first.\n" \
                          "Login session will be preserved, you don't need to login next time."
 PROMPT_PHONE_NUMBER = 'Your phone number -> '
@@ -66,35 +67,46 @@ _ZWJ = '\u200D'
 _FLAGS = '\U0001F1E6-\U0001F1FF'
 _KEY_CAPS = '0-9\*#'
 _EMOJI_REGEX = (
-              r'(?P<emoji>'
-              r'(?:'
-              r'(?:[%(key_caps)s](?:%(emo_variation)s)?%(kc_modifier)s)'
-                  r'|'
-                  r'(?:[%(flags)s]){2}'
-                  r'|'
-                  r'(?:[%(emojis)s])(?!%(txt_variation)s)'
-                  r')'
-                  r'(?:'
-                  r'(?:(?:%(emo_variation)s)?(?:[%(fitz_modifier)s]))'  # fitzpatrick modifier
-                  r'|'
-                  r'(?:(?:%(emo_variation)s)?(?:[%(zwj)s])(?:.)){1,4}'  # Multi glyphs (up to 4)
-                  r'|'
-                  r'(?:%(emo_variation)s)'  # Emoji variation
-                  r')?'
-                  r')'
-              ) % {
-                  'emojis': _CODE_POINTS,
-                  'txt_variation': _TXT_VARIATION,
-                  'emo_variation': _EMO_VARIATION,
-                  'fitz_modifier': _FITZ_MODIFIER,
-                  'zwj': _ZWJ,
-                  'flags': _FLAGS,
-                  'kc_modifier': _KC_MODIFIER,
-                  'key_caps': _KEY_CAPS
-              }  # noqa
+                   r'(?P<emoji>'
+                   r'(?:'
+                   r'(?:[%(key_caps)s](?:%(emo_variation)s)?%(kc_modifier)s)'
+                   r'|'
+                   r'(?:[%(flags)s]){2}'
+                   r'|'
+                   r'(?:[%(emojis)s])(?!%(txt_variation)s)'
+                   r')'
+                   r'(?:'
+                   r'(?:(?:%(emo_variation)s)?(?:[%(fitz_modifier)s]))'  # fitzpatrick modifier
+                   r'|'
+                   r'(?:(?:%(emo_variation)s)?(?:[%(zwj)s])(?:.)){1,4}'  # Multi glyphs (up to 4)
+                   r'|'
+                   r'(?:%(emo_variation)s)'  # Emoji variation
+                   r')?'
+                   r')'
+               ) % {
+                   'emojis': _CODE_POINTS,
+                   'txt_variation': _TXT_VARIATION,
+                   'emo_variation': _EMO_VARIATION,
+                   'fitz_modifier': _FITZ_MODIFIER,
+                   'zwj': _ZWJ,
+                   'flags': _FLAGS,
+                   'kc_modifier': _KC_MODIFIER,
+                   'key_caps': _KEY_CAPS
+               }  # noqa
 
 REGEX_MATCHING_EMOJI = ''.join([
     r'^[\w+]\.png\/(',
     _EMOJI_REGEX,
     r'\s)(\s?[\1])*$'
 ])
+
+#module defgen
+PROMPT_SET_TITLE = 'Title of this set -> '
+PROMOT_SET_SHORTNAME = 'Identifier of this set -> '
+
+NOTICE_START_GENERATE = 'Generating definition for %s'
+NOTICE_DONE_GENERATE = 'Done generating for %s at %s'
+NOTICE_GO_EDIT_DEFS = 'You can now open definitions and assign emojis to stickers. ' \
+                      'Uploader will automatically assign MEDIUM WHITE CIRCLE to any sticker that has none.'
+
+ERROR_EOF_FROM_INPUT = 'EOF detected, skipping this set...'

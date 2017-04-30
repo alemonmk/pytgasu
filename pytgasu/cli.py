@@ -52,7 +52,7 @@ def defgen(sets):
     Reads any given directory.
     Overwrites existing .ssd file.
     """
-    SetDefGenerator(sets)
+    SetDefGenerator(sets).generate()
 
 if __name__ == "__main__":
     cli()
