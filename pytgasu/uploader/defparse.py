@@ -19,7 +19,7 @@ from codecs import open as codecs_open
 import regex
 from PIL.Image import open as pil_open
 
-from strings import *
+from pytgasu.strings import *
 
 
 def _validate_image(image_path):

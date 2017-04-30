@@ -16,9 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import click
 
-from uploader import SetUploader
-from defgen import SetDefGenerator
-from strings import *
+from pytgasu.uploader import SetUploader
+from pytgasu.defgen import SetDefGenerator
+from pytgasu.strings import *
 
 
 @click.group()

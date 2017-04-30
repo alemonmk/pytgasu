@@ -18,7 +18,7 @@ from pathlib import Path
 
 from telethon.tl.session import Session
 
-from strings import *
+from pytgasu.strings import *
 
 
 class CustomisedSession(Session):

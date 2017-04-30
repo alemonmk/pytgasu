@@ -16,7 +16,7 @@
 from pathlib import Path
 from codecs import open as codecs_open
 
-from strings import *
+from pytgasu.strings import *
 
 
 class SetDefGenerator:
