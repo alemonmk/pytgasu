@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
-from codecs import open as codecs_open
 
 from pytgasu.strings import *
 
@@ -42,10 +41,11 @@ class SetDefGenerator:
                 continue
 
             def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.ssd')))
-            with codecs_open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
-                f.writelines([set_title, set_short_name])
-                sticker_lines = [''.join([fn, '/']) for fn in path_set_dir.glob('*.png')]
-                f.writelines(sticker_lines)
+            with open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
+                f.write('%s\n' % set_title)
+                f.write('%s\n' % set_short_name)
+                for fn in path_set_dir.glob('*.png'):
+                    f.write('%s\n' % ''.join([fn.name, '/']))
 
             print(NOTICE_DONE_GENERATE % (path_set_dir.stem, def_file_path))
 
