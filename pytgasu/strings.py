@@ -95,9 +95,9 @@ _EMOJI_REGEX = (
                }  # noqa
 
 REGEX_MATCHING_EMOJI = ''.join([
-    r'^[\w+]\.png\/(',
+    r'^[\w+]\.png\/',
     _EMOJI_REGEX,
-    r'\s)(\s?[\1])*$'
+    r'*$'
 ])
 
 #module defgen
