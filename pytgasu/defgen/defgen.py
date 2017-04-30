@@ -49,4 +49,4 @@ class SetDefGenerator:
 
             print(NOTICE_DONE_GENERATE % (path_set_dir.stem, def_file_path))
 
-    print(NOTICE_GO_EDIT_DEFS)
+        print(NOTICE_GO_EDIT_DEFS)
