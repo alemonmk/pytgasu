@@ -27,21 +27,24 @@ class CustomisedSession(Session):
     """
     def __init__(self, session_user_id='asu'):
         super().__init__(session_user_id)
+        self._session_file_path = Path(PATH_TGSESSION_FILE).expanduser()
 
     def save(self):
-        with Path(PATH_TGSESSION_FILE).open(mode='wb') as file:
+        if not self._session_file_path.parent.exists():
+            self._session_file_path.parent.mkdir()
+        with self._session_file_path.open(mode='wb') as file:
             pickle.dump(self, file)
 
     def delete(self):
         try:
-            Path(PATH_TGSESSION_FILE).unlink()
+            self._session_file_path.unlink()
             return True
         except ValueError:
             return False
 
     @staticmethod
     def try_load_or_create_new(session_user_id=None):
-        path = Path(PATH_TGSESSION_FILE)
+        path = Path(PATH_TGSESSION_FILE).expanduser()
 
         if path.exists():
             with path.open(mode='rb') as file:
