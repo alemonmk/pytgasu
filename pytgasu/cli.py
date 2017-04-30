@@ -20,6 +20,7 @@ import click
 
 from core import SetUploader
 from defgen import SetDefGenerator
+from strings import *
 
 
 @click.group()
@@ -28,35 +29,34 @@ def cli():
     pass
 
 
-@cli.command(short_help='Upload sticker sets to Telegram.')
-@click.option('--sub', '/sub', is_flag=True,  help='Subscribe to created set(s).')
+@cli.command(short_help=CLI_SHELP_UPLOAD_COMMAND)
+@click.option('-s', '/s', is_flag=True,  help=CLI_SHELP_UPLOAD_SUBFLAG)
 @click.argument('paths', nargs=-1)
-def upload(paths, subscribe):
+def upload(paths, s):
     """Upload sticker sets to Telegram.
     
     \b
-    Takes paths of:
+    Paths can be:
         1. directories with a .ssd (sticker set definitions) file, or
         2. .ssd files themselves
-    as arguments.
     """
     # Looks like I have to check if the path exist as click doesn't do dynamic validation
     _paths = [p for p in paths if Path(p).exists()]
     for nep in set(paths) - set(_paths):
         print("{} does not exist, ignoring!" % nep)
 
-    SetUploader(_paths, subscribe)
+    SetUploader(_paths, s)
 
 
-@cli.command()
+@cli.command(short_help=CLI_SHELP_DEFGEN_COMMAND)
 @click.argument(
-    'sets', nargs=-1,
-    type=click.Path(exists=True, file_okay=False, writable=True)
-)
+    'sets', nargs=-1, required=True,
+    type=click.Path(exists=True, file_okay=False, writable=True))
 def defgen(sets):
     """Generate sticker set definition.
     
-    Take any paths of directory as arguments.
+    Reads any given directory.
+    Overwrites existing .ssd file.
     """
     SetDefGenerator(sets)
 
