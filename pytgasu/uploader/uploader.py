@@ -77,9 +77,9 @@ class SetUploader:
     def upload(self, subscribe=False):
         if len(self._stickersets):
             self._do_uploads(subscribe=subscribe)
-            self._TC.disconnect()
         else:
             print(ERROR_NO_SET_UPLOAD)
+        self._TC.disconnect()
 
     @staticmethod
     def _parse_set_defs(defpaths):
