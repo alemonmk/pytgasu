@@ -22,6 +22,7 @@ PROMPT_LOGIN_CODE = 'Enter the login code -> '
 PROMPT_2FA_PASSWORD = 'Two step verification is enabled. Please enter your password -> '
 
 ERROR_NO_SET_UPLOAD = 'No sticker set need to be uploaded, aborting.'
+ERROR_NO_STICKER_IN_SET = 'No sticker can be uploaded from this set, skipping.'
 ERROR_INCORRECT_STICKER_LINE = 'Incorrect sticker line (should be ^<filename>/<emoji>?$), ignoring line: %s'
 ERROR_DEFFILE_ENCODING = '%s is not in UTF-8 encoding, ignoring.'
 ERROR_INVAILD_STICKER_IMAGE = '%s is not valid image for sticker, ignoring.'

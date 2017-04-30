@@ -69,6 +69,9 @@ def parse(deffile):
                 if not emojiseq:
                     emojiseq = DEFAULT_EMOJI
                 stickers.append((image_path, emojiseq))
+            if not stickers:
+                print(ERROR_NO_STICKER_IN_SET)
+                return None
             return set_title, set_short_name, stickers
     except ValueError:
         print(ERROR_DEFFILE_ENCODING % deffile)
