@@ -41,7 +41,7 @@ class SetDefGenerator:
                 print(ERROR_EOF_FROM_INPUT)
                 continue
 
-            def_file_path = path_set_dir.joinpath(set_short_name.join('.ssd'))
+            def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.ssd')))
             with codecs_open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
                 f.writelines([set_title, set_short_name])
                 sticker_lines = [''.join([fn, '/']) for fn in path_set_dir.glob('*.png')]
