@@ -54,10 +54,11 @@ def parse(deffile):
     _sticker_line_pattern = regex.compile(REGEX_MATCHING_EMOJI)
     try:
         with codecs_open(deffile, encoding='utf-8', errors='strict') as f:
-            set_title = f.readline()
-            set_short_name = f.readline()
+            flines = [l.rstrip() for l in f]  # strip line breaks
+            set_title = flines[0]
+            set_short_name = flines[1]
             stickers = list()  # there may be a 120 stickers per set hard limit, idk
-            for sticker_line in f:
+            for sticker_line in flines[2:]:
                 if not _sticker_line_pattern.fullmatch(sticker_line):
                     print(ERROR_INCORRECT_STICKER_LINE % sticker_line)
                     continue
