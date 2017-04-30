@@ -14,8 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from pathlib import Path
-
 import click
 
 from core import SetUploader
@@ -31,7 +29,8 @@ def cli():
 
 @cli.command(short_help=CLI_SHELP_UPLOAD_COMMAND)
 @click.option('-s', '/s', is_flag=True,  help=CLI_SHELP_UPLOAD_SUBFLAG)
-@click.argument('paths', nargs=-1)
+@click.argument('paths', nargs=-1, required=True,
+                type=click.Path(exists=True))
 def upload(paths, s):
     """Upload sticker sets to Telegram.
     
@@ -40,12 +39,7 @@ def upload(paths, s):
         1. directories with a .ssd (sticker set definitions) file, or
         2. .ssd files themselves
     """
-    # Looks like I have to check if the path exist as click doesn't do dynamic validation
-    _paths = [p for p in paths if Path(p).exists()]
-    for nep in set(paths) - set(_paths):
-        print("{} does not exist, ignoring!" % nep)
-
-    SetUploader(_paths, s)
+    SetUploader(paths, s)
 
 
 @cli.command(short_help=CLI_SHELP_DEFGEN_COMMAND)
