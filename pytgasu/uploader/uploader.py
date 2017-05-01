@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
 from hashlib import md5
+import logging
 
 from telethon import TelegramClient
 from telethon.errors import RPCError
@@ -50,6 +51,7 @@ class SetUploader:
             session=CustomisedSession.try_load_or_create_new(),
             api_id=self._telegram_api_id,
             api_hash=self._telegram_api_hash)
+        logging.getLogger('TelethonLogger').setLevel(logging.ERROR)  # suppress logging from telethon
 
         # Stolen from telethon.InteractiveTelegramClient :P
         self._TC.connect()
