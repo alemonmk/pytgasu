@@ -120,7 +120,7 @@ class SetUploader:
                     caption='')
                 self._sticker_bot_cmd(SendMediaRequest, media=uploaded_doc)
                 self._sticker_bot_cmd(SendMessageRequest, message=emojis)
-                print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index, 'total': len(stickers)})
+                print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index + 1, 'total': len(stickers)})
             self._sticker_bot_cmd(SendMessageRequest, message='/publish')
             self._sticker_bot_cmd(SendMessageRequest, message=set_short_name)
             print(NOTICE_SET_AVAILABLE % {'title': set_title, 'short_name': set_short_name})
