@@ -87,6 +87,12 @@ class SetUploader:
                 self._stickersets.append(set_def_tuple)
 
     def upload(self, subscribe=False):
+        """
+        Start uploads, and disconnect from Telegram after finish.
+        
+        :param subscribe: See `strings.CLI_SHELP_UPLOAD_SUBFLAG`
+        :return: None
+        """
         if self._stickersets:
             self._do_uploads(subscribe=subscribe)
         else:
@@ -94,6 +100,7 @@ class SetUploader:
         self._TC.disconnect()
 
     def _do_uploads(self, subscribe):
+        """Talk to Stickers bot and create the sets."""
         self._sticker_bot_cmd(SendMessageRequest, message='/cancel')
         self._sticker_bot_cmd(SendMessageRequest, message='/start')
 
@@ -127,11 +134,26 @@ class SetUploader:
         return int.from_bytes(urandom(8), signed=True, byteorder='little')
 
     def _sticker_bot_cmd(self, request, **kwargs):
+        """
+        An 'interface' to send `MTProtoRequest`s.
+        
+        :param request: An MTProtoRequest
+        :param kwargs: Parameters for the MTProtoRequest
+        :return: None
+        """
         random_id = self._get_random_id()
         self._TC.invoke(request=request(**kwargs, peer=self._stickersbot, random_id=random_id))
         sleep(1)  # wait for bot reply, but can ignore the content
 
     def _do_upload_file(self, filepath):
+        """
+        Upload a file to Telegram cloud.
+        Stolen from telethon.TelegramClient.upload_file().
+        Specialised for upload sticker images.
+        
+        :param filepath: A path-like object
+        :return: An InputFile handle.
+        """
         file = Path(filepath)
         file_id = self._get_random_id()
         file_name = file.name
