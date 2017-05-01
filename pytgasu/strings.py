@@ -97,7 +97,7 @@ _EMOJI_REGEX = (
                }  # noqa
 
 REGEX_MATCHING_EMOJI = ''.join([
-    r'^[\w+]\.png\/',
+    r'^[^*&%\s]+\.png\/',  # http://stackoverflow.com/questions/10324228/
     _EMOJI_REGEX,
     r'*$'
 ])
