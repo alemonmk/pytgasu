@@ -27,6 +27,7 @@ ERROR_INCORRECT_STICKER_LINE = 'Incorrect sticker line (should be ^<filename>/<e
 ERROR_DEFFILE_ENCODING = '%s is not in UTF-8 encoding, ignoring.'
 ERROR_INVAILD_STICKER_IMAGE = '%s is not valid image for sticker, ignoring.'
 
+NOTICE_PREPARING = 'Preparing %s for upload...'
 NOTICE_UPLOADED = '%(fn)s uploaded. %(cur)d/%(total)d\r'
 NOTICE_SET_AVAILABLE = '%(title)s is published and now available at https://t.me/addstickers/%(short_name)s.'
 NOTICE_SET_SUBSCRIBED = '%s has been subscribed.'

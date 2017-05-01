@@ -41,7 +41,7 @@ class SetUploader:
 
     def __init__(self, set_paths):
         """
-        Log in to Telegram and start uploading.
+        Log in to Telegram and prepare for upload.
         
         :param set_paths: See the docstring of `cli.upload()`
         """
@@ -72,31 +72,26 @@ class SetUploader:
                     else:
                         raise e
 
-        self._stickersets = self._parse_set_defs(set_paths)
+        self._stickersets = list()
+        for setpath in set_paths:
+            print(NOTICE_PREPARING % setpath)
+            path = Path(setpath)
+            set_def_tuple = ()
+            if path.is_dir():
+                for d in path.glob('*.ssd'):
+                    set_def_tuple = defparse.parse(d)  # only process one
+                    break
+            elif path.suffix == '.ssd':
+                set_def_tuple = defparse.parse(path)
+            if set_def_tuple:
+                self._stickersets.append(set_def_tuple)
 
     def upload(self, subscribe=False):
-        if len(self._stickersets):
+        if self._stickersets:
             self._do_uploads(subscribe=subscribe)
         else:
             print(ERROR_NO_SET_UPLOAD)
         self._TC.disconnect()
-
-    @staticmethod
-    def _parse_set_defs(defpaths):
-        """
-        Find .ssd files and parse them.
-        
-        :param defpaths: See ``set_paths`` of ``__init__()``
-        :return: A list of sticker set tuples. Can be empty.
-        """
-        sticker_sets = list()
-        for _setpath in defpaths:
-            fp = Path(_setpath)
-            set_def_file = fp if not fp.is_dir() and fp.suffix == '.ssd' else fp.glob('*.ssd').pop()
-            set_def_tuple = defparse.parse(set_def_file)
-            if set_def_tuple:
-                sticker_sets.append(set_def_tuple)
-        return sticker_sets
 
     def _do_uploads(self, subscribe):
         self._sticker_bot_cmd(SendMessageRequest, message='/cancel')
