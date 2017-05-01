@@ -38,7 +38,7 @@ CLI_SHELP_DEFGEN_COMMAND = 'Generate sticker set definition.'
 
 PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
 
-DEFAULT_EMOJI = ['\u26aa']  # MEDIUM WHITE CIRCLE
+DEFAULT_EMOJI = '\u26aa\ufe0f'  # MEDIUM WHITE CIRCLE
 
 # Emoji filtering regular expression construct
 # Taken from https://github.com/TakumiHQ/emoji-unicode/blob/master/emoji_unicode/pattern.py
