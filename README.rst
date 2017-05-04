@@ -6,10 +6,21 @@ Telegram sticker sets creation automated (partially).
 
 Features
 --------
-
 PyTgASU frees you from selecting files and emojis repeatedly when creating sticker sets on Telegram.
 
 Better yet, it makes sticker sets kind of "distributable" and "installable".
+
+Motivation
+----------
+There does is a `Telegram Stickers Uploader <http://telegramsu.lostberry.com/>`_, but:
+
+    1. It has limited choices of emojis
+        - Well, 250. Really? This is not enough. UTR #51 4.0 defined 910 code points with Emoji_Presentation=Yes.
+
+    2. It does not work with current Telegram Desktop
+        - It does send commands through it, but it cannot upload anything. At least not for me.
+
+And now you have this.
 
 Installation
 ------------
@@ -65,6 +76,17 @@ Once you are done editing the `.ssd` file(s), you can let `pytgasu` do the heavy
 By specifying `upload -s`, it also automatically subscribe to the set once it's uploaded.
 
 You have to log in to Telegram at the first run, it won't ask you again after that. A Telegram session file will be created at `~/.pytgasu/asu.session`.
+
+Limitions & TODOs
+-----------------
+1. It does not help scale up/down if image is not appropriate size.
+    - I can bundle waifu2x-caffe, but that would be a Windows-only feature.
+2. It does not help sink image file size if it is too large.
+    - I will bundle pngquant.
+3. No way to log out.
+    - Add a logout command. Meanwhile you can delete `~/.pytgasu/` and kill the session from other app.
+4. No GUI.
+    - Well...I hope you are crazy enough to make one for me ;)
 
 Contributing
 ------------
