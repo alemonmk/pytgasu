@@ -14,11 +14,11 @@ Motivation
 ----------
 There does is a `Telegram Stickers Uploader <http://telegramsu.lostberry.com/>`_, but:
 
-    1. It has limited choices of emojis
-        - Well, 250. Really? This is not enough. UTR #51 4.0 defined 910 code points with Emoji_Presentation=Yes.
+1. It has limited choices of emojis
+    - Well, 250. Really? This is not enough. UTR #51 4.0 defined 910 code points with Emoji_Presentation=Yes.
 
-    2. It does not work with current Telegram Desktop
-        - It does send commands through it, but it cannot upload anything. At least not for me.
+2. It does not work with current Telegram Desktop
+    - It does send commands through it, but it cannot upload anything. At least not for me.
 
 And now you have this.
 
@@ -36,7 +36,7 @@ Dependency
 - `regex <https://bitbucket.org/mrabarnett/mrab-regex>`_
 - `Pillow <https://python-pillow.org/>`_
 
-Use `pip` to install:
+Use ``pip`` to install:
 
 .. code-block:: bash
 
@@ -63,28 +63,28 @@ Generate definition files by running and enter some detail:
 
     $ pytgasu defgen <dir>...
 
-Then open the generate `.ssd` file with text editor of your choice to assign emojis (and **only** emojis).
+Then open the generate ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
 
 Upload sticker sets
 +++++++++++++++++++
-Once you are done editing the `.ssd` file(s), you can let `pytgasu` do the heavy lifting.
+Once you are done editing the ``.ssd`` file(s), you can let ``pytgasu`` do the heavy lifting.
 
 .. code-block:: bash
 
     $ pytgasu upload (<dir>|<path_to.ssd>)...
 
-By specifying `upload -s`, it also automatically subscribe to the set once it's uploaded.
+By specifying ``upload -s``, it also automatically subscribe to the set once it's uploaded.
 
 You have to log in to Telegram at the first run, it won't ask you again after that. A Telegram session file will be created at `~/.pytgasu/asu.session`.
 
 Limitions & TODOs
 -----------------
 1. It does not help scale up/down if image is not appropriate size.
-    - I can bundle waifu2x-caffe, but that would be a Windows-only feature.
+    - I can bundle ``waifu2x-caffe``, but that would be a Windows-only feature.
 2. It does not help sink image file size if it is too large.
-    - I will bundle pngquant.
+    - I will bundle ``pngquant``.
 3. No way to log out.
-    - Add a logout command. Meanwhile you can delete `~/.pytgasu/` and kill the session from other app.
+    - Add a logout command. Meanwhile you can delete ``~/.pytgasu/`` and kill the session from other app.
 4. No GUI.
     - Well...I hope you are crazy enough to make one for me ;)
 
@@ -96,7 +96,7 @@ It's okay to talk via e-mail if you want to stay private or just don't bother wi
 
 Stuff in need
 +++++++++++++
-- Tests. Preferably something `nose` uses.
+- Tests. Preferably something ``nose`` uses.
 - Better documents. There's not much to document though ...
 - Feature requests. Keep it simple, don't complicate this tool.
 - Debug. I'm not that exhaustive and may leave edge cases here and there.

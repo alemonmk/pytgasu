@@ -102,7 +102,7 @@ REGEX_MATCHING_EMOJI = ''.join([
     r'*$'
 ])
 
-#module defgen
+# module defgen
 PROMPT_SET_TITLE = 'Title of this set -> '
 PROMOT_SET_SHORTNAME = 'Identifier of this set -> '
 
