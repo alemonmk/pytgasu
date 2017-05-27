@@ -75,7 +75,17 @@ Once you are done editing the ``.ssd`` file(s), you can let ``pytgasu`` do the h
 
 By specifying ``upload -s``, it also automatically subscribe to the set once it's uploaded.
 
-You have to log in to Telegram at the first run, it won't ask you again after that. A Telegram session file will be created at `~/.pytgasu/asu.session`.
+You have to log in to Telegram at the first run, it won't ask you again after that. A Telegram session file will be created at ``~/.pytgasu/asu.session``.
+
+Log out of Telegram
++++++++++++++++++++
+If you have no business with ``pytgasu`` anymore, you may want to log it out from Telegram.
+
+.. code-block:: bash
+
+    $ pytgasu logout
+
+This terminates your session from Telegram and deletes the stored session file and its folder, saving you few clicks in other Telegram client and file manager.
 
 Limitions & TODOs
 -----------------
@@ -83,9 +93,7 @@ Limitions & TODOs
     - I can bundle ``waifu2x-caffe``, but that would be a Windows-only feature.
 2. It does not help sink image file size if it is too large.
     - I will bundle ``pngquant``.
-3. No way to log out.
-    - Add a logout command. Meanwhile you can delete ``~/.pytgasu/`` and kill the session from other app.
-4. No GUI.
+3. No GUI.
     - Well...I hope you are crazy enough to make one for me ;)
 
 Contributing

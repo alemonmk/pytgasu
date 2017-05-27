@@ -113,5 +113,27 @@ def defgen(sets):
 
     SetDefGenerator(set_dirs=sets)
 
+
+@cli.command(short_help=CLI_SHELP_LOGOUT_COMMAND)
+def logout():
+    """Logout from Telegram."""
+    if not Path(PATH_TGSESSION_FILE).exists():
+        # Return early because TelegramClient creates a session first,
+        # but only when you can log_out() the session file gets deleted.
+        # If it's not there, don't create it and waste time talking to Telegram.
+        print(ERROR_NOT_LOGGEDIN)
+        return
+
+    from telethon import TelegramClient
+    from pytgasu.uploader import CustomisedSession
+    tc = TelegramClient(
+        session=CustomisedSession.try_load_or_create_new(),
+        api_id=TG_API_ID,
+        api_hash=TG_API_HASH)
+    tc.connect()
+    # I guess even if user is not authorised, invoking LogOutRequest does not cause problems
+    tc.log_out()
+    Path(PATH_TGSESSION_FILE).parent.unlink()
+
 if __name__ == "__main__":
     cli()
