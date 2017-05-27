@@ -27,9 +27,9 @@ from telethon.tl.types.messages import StickerSetInstallResultSuccess
 from os import urandom
 from time import sleep
 
-from pytgasu.uploader import defparse
-from pytgasu.uploader.customised_session import CustomisedSession
-from pytgasu.strings import *
+from . import defparse
+from .customised_session import CustomisedSession
+from ..strings import *
 
 
 class SetUploader:

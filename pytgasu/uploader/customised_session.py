@@ -15,10 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import pickle
 from pathlib import Path
-
 from telethon.tl.session import Session
-
-from pytgasu.strings import *
+from ..strings import *
 
 
 class CustomisedSession(Session):
