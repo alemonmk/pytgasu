@@ -20,7 +20,7 @@ There does is a `Telegram Stickers Uploader <http://telegramsu.lostberry.com/>`_
 2. It does not work with current Telegram Desktop
     - It does send commands through it, but it cannot upload anything. At least not for me.
 
-And now you have this.
+And now ``pytgasu`` comes to your rescue.
 
 Installation
 ------------
@@ -98,9 +98,9 @@ Limitions & TODOs
 
 Contributing
 ------------
-Please create feature requests, leave suggestions through `GitHub issue <https://github.com/alemonmk/pytgasu/issues>`_, or just code and fire a `pull request <https://github.com/alemonmk/pytgasu/pulls>`_.
+You may request new features, report bugs or leave suggestions through `GitHub issue <https://github.com/alemonmk/pytgasu/issues>`_, or just code and fire a `pull request <https://github.com/alemonmk/pytgasu/pulls>`_.
 
-It's okay to talk via e-mail if you want to stay private or just don't bother with GitHub.
+You may contact me via e-mail if you want to stay private or just don't bother with GitHub.
 
 Stuff in need
 +++++++++++++
