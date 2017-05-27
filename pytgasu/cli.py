@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
 import click
-from pytgasu.strings import *
+from pytgasu.constants import *
 
 
 @click.group()
@@ -43,15 +43,14 @@ def upload(paths, s):
     from pytgasu.uploader import CustomisedSession, SetDefParse, SetUploader
 
     # region Telegram init
-    _telegram_api_id, _telegram_api_hash = 173590, "9b05a9d53a77019aa1d615f27776e60f"
     # TODO: strip Telethon to avoid too much implicit import
     # Probably have to let the 'update' thread stay even we don't need it
     # as ping-pongs prevent server from disconnecting us,
     # but what's the point as we are constantly talking while running this function?
     tc = TelegramClient(
         session=CustomisedSession.try_load_or_create_new(),
-        api_id=_telegram_api_id,
-        api_hash=_telegram_api_hash)
+        api_id=TG_API_ID,
+        api_hash=TG_API_HASH)
     logging.getLogger('TelethonLogger').setLevel(logging.ERROR)  # suppress logging from telethon
 
     # Stolen from telethon.InteractiveTelegramClient :P

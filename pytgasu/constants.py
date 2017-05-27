@@ -14,13 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# module uploader
+# telegram specified
+TG_API_ID = 173590
+TG_API_HASH = "9b05a9d53a77019aa1d615f27776e60f"
 PROMPT_ON_FIRST_LAUNCH = "It's your first run of this program, please login first.\n" \
                          "Login session will be preserved, you don't need to login next time."
 PROMPT_PHONE_NUMBER = 'Your phone number -> '
 PROMPT_LOGIN_CODE = 'Enter the login code -> '
 PROMPT_2FA_PASSWORD = 'Two step verification is enabled. Please enter your password -> '
 
+# uploader
 ERROR_NO_SET_UPLOAD = 'No sticker set need to be uploaded, aborting.'
 ERROR_NO_STICKER_IN_SET = 'No sticker can be uploaded from this set, skipping.'
 ERROR_INCORRECT_STICKER_LINE = 'Incorrect sticker line (should be ^<filename>/<emoji>?$), ignoring line: %s'
@@ -32,13 +35,9 @@ NOTICE_UPLOADED = '%(fn)s uploaded. %(cur)d/%(total)d\r'
 NOTICE_SET_AVAILABLE = '%(title)s is published and now available at https://t.me/addstickers/%(short_name)s.'
 NOTICE_SET_SUBSCRIBED = '%s has been subscribed.'
 
-CLI_SHELP_UPLOAD_COMMAND = 'Upload sticker sets to Telegram.'
-CLI_SHELP_UPLOAD_SUBFLAG = 'Subscribe to created set(s).'
-CLI_SHELP_DEFGEN_COMMAND = 'Generate sticker set definition.'
+DEFAULT_EMOJI = '\u26aa\ufe0f'  # MEDIUM WHITE CIRCLE
 
 PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
-
-DEFAULT_EMOJI = '\u26aa\ufe0f'  # MEDIUM WHITE CIRCLE
 
 # Emoji filtering regular expression construct
 # Taken from https://github.com/TakumiHQ/emoji-unicode/blob/master/emoji_unicode/pattern.py
@@ -102,7 +101,7 @@ REGEX_MATCHING_EMOJI = ''.join([
     r'*$'
 ])
 
-# module defgen
+# defgen
 PROMPT_SET_TITLE = 'Title of this set -> '
 PROMOT_SET_SHORTNAME = 'Identifier of this set -> '
 
@@ -112,3 +111,10 @@ NOTICE_GO_EDIT_DEFS = 'You can now open definitions and assign emojis to sticker
                       'Uploader will automatically assign MEDIUM WHITE CIRCLE to any sticker that has none.'
 
 ERROR_EOF_FROM_INPUT = 'EOF detected, skipping this set...'
+
+# cli
+CLI_SHELP_UPLOAD_COMMAND = 'Upload sticker sets to Telegram.'
+CLI_SHELP_UPLOAD_SUBFLAG = 'Subscribe to created set(s).'
+CLI_SHELP_DEFGEN_COMMAND = 'Generate sticker set definition.'
+CLI_SHELP_LOGOUT_COMMAND = 'Log out from Telegram.'
+ERROR_NOT_LOGGEDIN = 'You are not logged in.'

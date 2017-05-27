@@ -16,7 +16,7 @@
 from pathlib import Path
 from time import sleep
 from os import urandom
-from ..strings import *
+from ..constants import *
 
 from telethon.tl.types import InputPeerUser
 # it only talks to @Stickers, so just hardcode it

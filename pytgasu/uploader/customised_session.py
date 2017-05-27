@@ -16,7 +16,7 @@
 import pickle
 from pathlib import Path
 from telethon.tl.session import Session
-from ..strings import *
+from ..constants import *
 
 
 class CustomisedSession(Session):
