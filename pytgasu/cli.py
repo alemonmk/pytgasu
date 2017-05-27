@@ -17,7 +17,6 @@
 import click
 
 from pytgasu.uploader import SetUploader
-from pytgasu.defgen import SetDefGenerator
 from pytgasu.strings import *
 
 
@@ -42,17 +41,22 @@ def upload(paths, s):
     SetUploader(paths).upload(s)
 
 
+# TODO: rename to prepare
 @cli.command(short_help=CLI_SHELP_DEFGEN_COMMAND)
 @click.argument(
     'sets', nargs=-1, required=True,
     type=click.Path(exists=True, file_okay=False, writable=True))
 def defgen(sets):
     """Generate sticker set definition.
-    
+
     Reads any given directory.
     Overwrites existing .ssd file.
     """
-    SetDefGenerator(sets).generate()
+    from pytgasu.defgen import SetDefGenerator
+
+    # TODO: do first-run configurations to setting paths to executables of pngquant and/or waifu2x
+
+    SetDefGenerator(set_dirs=sets)
 
 if __name__ == "__main__":
     cli()

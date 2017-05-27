@@ -1,1 +1,1 @@
-from .defgen import SetDefGenerator
+from .defgen import generate as SetDefGenerator
