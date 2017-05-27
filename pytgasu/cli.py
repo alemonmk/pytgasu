@@ -14,9 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+from pathlib import Path
 import click
-
-from pytgasu.uploader import SetUploader
 from pytgasu.strings import *
 
 
@@ -32,13 +31,70 @@ def cli():
                 type=click.Path(exists=True))
 def upload(paths, s):
     """Upload sticker sets to Telegram.
-    
+
     \b
     Paths can be:
         1. directories with a .ssd (sticker set definitions) file, or
         2. .ssd files themselves
     """
-    SetUploader(paths).upload(s)
+    import logging
+    from telethon import TelegramClient
+    from telethon.errors import RPCError
+    from pytgasu.uploader import CustomisedSession, SetDefParse, SetUploader
+
+    # region Telegram init
+    _telegram_api_id, _telegram_api_hash = 173590, "9b05a9d53a77019aa1d615f27776e60f"
+    # TODO: strip Telethon to avoid too much implicit import
+    # Probably have to let the 'update' thread stay even we don't need it
+    # as ping-pongs prevent server from disconnecting us,
+    # but what's the point as we are constantly talking while running this function?
+    tc = TelegramClient(
+        session=CustomisedSession.try_load_or_create_new(),
+        api_id=_telegram_api_id,
+        api_hash=_telegram_api_hash)
+    logging.getLogger('TelethonLogger').setLevel(logging.ERROR)  # suppress logging from telethon
+
+    # Stolen from telethon.InteractiveTelegramClient :P
+    tc.connect()
+    if not tc.is_user_authorized():
+        print(PROMPT_ON_FIRST_LAUNCH)
+        user_phone = input(PROMPT_PHONE_NUMBER)
+        tc.send_code_request(user_phone)
+        code_ok = False
+        while not code_ok:
+            code = input(PROMPT_LOGIN_CODE)
+            try:
+                code_ok = tc.sign_in(user_phone, code)
+
+            # Two-step verification may be enabled
+            except RPCError as e:
+                from getpass import getpass
+                if e.password_required:
+                    pw = getpass(PROMPT_2FA_PASSWORD)
+                    code_ok = tc.sign_in(password=pw)
+                else:
+                    raise e
+    # endregion
+
+    # region Set list init
+    sticker_sets = list()
+    for setpath in paths:
+        print(NOTICE_PREPARING % setpath)
+        path = Path(setpath).resolve()
+        set_def_tuple = ()
+        if path.is_dir():
+            for d in path.glob('*.ssd'):
+                set_def_tuple = SetDefParse(d)  # only process one
+                break
+        elif path.suffix == '.ssd':
+            set_def_tuple = SetDefParse(path)
+        if set_def_tuple:
+            sticker_sets.append(set_def_tuple)
+    # endregion
+
+    SetUploader(tc=tc, sets=sticker_sets, subscribe=s)
+
+    tc.disconnect()
 
 
 # TODO: rename to prepare
