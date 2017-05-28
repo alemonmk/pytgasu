@@ -96,13 +96,12 @@ def upload(paths, s):
     tc.disconnect()
 
 
-# TODO: rename to prepare
-@cli.command(short_help=CLI_SHELP_DEFGEN_COMMAND)
+@cli.command(short_help=CLI_SHELP_PREPARE_COMMAND)
 @click.argument(
     'sets', nargs=-1, required=True,
     type=click.Path(exists=True, file_okay=False, writable=True))
-def defgen(sets):
-    """Generate sticker set definition.
+def prepare(sets):
+    """Prepare sticker sets to be uploaded by this tool.
 
     Reads any given directory.
     Overwrites existing .ssd file.
@@ -111,7 +110,7 @@ def defgen(sets):
 
     # TODO: do first-run configurations to setting paths to executables of pngquant and/or waifu2x
 
-    SetDefGenerator(set_dirs=sets)
+    SetDefGenerator(set_dir=set_dir)
 
 
 @cli.command(short_help=CLI_SHELP_LOGOUT_COMMAND)

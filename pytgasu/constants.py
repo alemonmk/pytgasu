@@ -101,7 +101,7 @@ REGEX_MATCHING_EMOJI = ''.join([
     r'*$'
 ])
 
-# defgen
+# prepare
 PROMPT_SET_TITLE = 'Title of this set -> '
 PROMOT_SET_SHORTNAME = 'Identifier of this set -> '
 
@@ -115,6 +115,6 @@ ERROR_EOF_FROM_INPUT = 'EOF detected, skipping this set...'
 # cli
 CLI_SHELP_UPLOAD_COMMAND = 'Upload sticker sets to Telegram.'
 CLI_SHELP_UPLOAD_SUBFLAG = 'Subscribe to created set(s).'
-CLI_SHELP_DEFGEN_COMMAND = 'Generate sticker set definition.'
+CLI_SHELP_PREPARE_COMMAND = 'Generate sticker set definition.'
 CLI_SHELP_LOGOUT_COMMAND = 'Log out from Telegram.'
 ERROR_NOT_LOGGEDIN = 'You are not logged in.'

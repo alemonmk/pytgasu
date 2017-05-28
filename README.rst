@@ -53,17 +53,17 @@ or
 Usage
 -----
 
-Generate set definition
-+++++++++++++++++++++++
-You need set definition file for each sticker set you want to create.
+Prepare set
++++++++++++
+``pytgasu`` needs to work with set definition file for each sticker set you want to create.
 
 Generate definition files by running and enter some detail:
 
 .. code-block:: bash
 
-    $ pytgasu defgen <dir>...
+    $ pytgasu prepare <dir>...
 
-Then open the generate ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
+Finally open the generated ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
 
 Upload sticker sets
 +++++++++++++++++++
