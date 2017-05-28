@@ -40,7 +40,7 @@ def upload(paths, s):
     import logging
     from telethon import TelegramClient
     from telethon.errors import RPCError
-    from pytgasu.uploader import CustomisedSession, SetDefParse, SetUploader
+    from pytgasu.upload import CustomisedSession, SetDefParse, SetUploader
 
     # region Telegram init
     # TODO: strip Telethon to avoid too much implicit import
@@ -125,7 +125,7 @@ def logout():
         return
 
     from telethon import TelegramClient
-    from pytgasu.uploader import CustomisedSession
+    from pytgasu.upload import CustomisedSession
     tc = TelegramClient(
         session=CustomisedSession.try_load_or_create_new(),
         api_id=TG_API_ID,
