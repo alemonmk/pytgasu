@@ -103,14 +103,20 @@ def upload(paths, s):
 def prepare(sets):
     """Prepare sticker sets to be uploaded by this tool.
 
-    Reads any given directory.
-    Overwrites existing .ssd file.
+    Reads any given directories, process any file Telegram won't accept.
+    Generates and overwrites existing .ssd file.
     """
-    from pytgasu.defgen import SetDefGenerator
-
     # TODO: do first-run configurations to setting paths to executables of pngquant and/or waifu2x
 
-    SetDefGenerator(set_dir=set_dir)
+    from pytgasu.prepare import SetDefGenerator, PrepareImageFiles
+
+    for set_dir in sets:
+        set_dir = Path(set_dir).resolve()
+        PrepareImageFiles(set_dir=set_dir)
+        # TODO: Readme TODO 1 & 2
+        SetDefGenerator(set_dir=set_dir)
+
+    print(NOTICE_GO_EDIT_DEFS)
 
 
 @cli.command(short_help=CLI_SHELP_LOGOUT_COMMAND)

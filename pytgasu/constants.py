@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# config
+PATH_CONFIG_FOLDER = '~/.pytgasu/asu.cfg'
+PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
+
 # telegram specified
 TG_API_ID = 173590
 TG_API_HASH = "9b05a9d53a77019aa1d615f27776e60f"
@@ -36,8 +40,6 @@ NOTICE_SET_AVAILABLE = '%(title)s is published and now available at https://t.me
 NOTICE_SET_SUBSCRIBED = '%s has been subscribed.'
 
 DEFAULT_EMOJI = '\u26aa\ufe0f'  # MEDIUM WHITE CIRCLE
-
-PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
 
 # Emoji filtering regular expression construct
 # Taken from https://github.com/TakumiHQ/emoji-unicode/blob/master/emoji_unicode/pattern.py
