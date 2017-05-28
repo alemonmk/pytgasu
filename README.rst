@@ -67,19 +67,19 @@ Finally open the generated ``.ssd`` file with text editor of your choice to assi
 
 Upload sticker sets
 +++++++++++++++++++
-Once you are done editing the ``.ssd`` file(s), you can let ``pytgasu`` do the heavy lifting.
+Once you are done editing the ``.ssd`` file(s), let ``pytgasu`` do the heavy lifting.
 
 .. code-block:: bash
 
     $ pytgasu upload (<dir>|<path_to.ssd>)...
 
-By specifying ``upload -s``, it also automatically subscribe to the set once it's uploaded.
+By specifying ``upload -s``, it automatically subscribe to the set once it's uploaded.
 
-You have to log in to Telegram at the first run, it won't ask you again after that. A Telegram session file will be created at ``~/.pytgasu/asu.session``.
+You have to log in to Telegram at the first run. A session file will be created at ``~/.pytgasu/asu.session``.
 
 Log out of Telegram
 +++++++++++++++++++
-If you have no business with ``pytgasu`` anymore, you may want to log it out from Telegram.
+If you have no more business with ``pytgasu``, you may want to log it out from Telegram.
 
 .. code-block:: bash
 
