@@ -66,7 +66,7 @@ You can take care of all above with this command:
 
 At first launch it will ask you paths to some tools (namely pngquant and waifu2x-caffe), if you prefer not using any of them you can just leave it empty. This saves a yaml-formatted configuration file at ``~/.pytgasu/asu.cfg``.
 
-You need to provide a descriptive name of the set, and an 'short name' that enables you to share it with https://t.me/addsticker/<short_name>.
+You need to provide a descriptive name of the set, and an short name that enables you to share it with ``https://t.me/addsticker/<short_name>``.
 
 Finally open the generated ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
 
