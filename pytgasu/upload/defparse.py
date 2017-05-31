@@ -26,10 +26,9 @@ def parse(def_file):
     :return: A tuple of set_title, set_short_name, [(image_fullpath, emojis)] representing the set
              None on error
     """
-    from pathlib import Path
-    import regex
+    import re
 
-    _sticker_line_pattern = regex.compile(REGEX_MATCHING_EMOJI)
+    _sticker_line_pattern = re.compile(REGEX_MATCHING_EMOJI)
     try:
         with open(def_file, encoding='utf-8', errors='strict') as f:
             lines = [l.rstrip() for l in f]  # strip line breaks

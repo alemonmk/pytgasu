@@ -33,7 +33,6 @@ Dependency
 ++++++++++
 - `Telethon <https://github.com/LonamiWebs/Telethon>`_
 - `Click <http://github.com/mitsuhiko/click>`_
-- `regex <https://bitbucket.org/mrabarnett/mrab-regex>`_
 - `Pillow <https://python-pillow.org/>`_
 
 Use ``pip`` to install:
