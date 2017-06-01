@@ -67,19 +67,39 @@ def _move_from_dir_with_tags(dirs_with_tags, dst):
 
 
 # region image operations
-# w2x upscaling
-def _w2x_upscale(d=None, scalebywidth):
-    pass
+def _w2x_upscale(d, scalebywidth):
+    """Upscale all png in ``d`` using waifu2x."""
+    path_to_w2x_caffe = ''  # TODO: read from config
+
+    w2x_std_params = [
+        '-l', 'png', '-e', 'png', '-d', '8',
+        '-m', 'noise_scale', '-n', '2',
+        '-p', 'gpu',  # TODO: auto detect
+        '-c', '256'
+    ]
+    w2x_partial_cmdline = [path_to_w2x_caffe] + w2x_std_params
+
+    scale_by = ('-h', '-w')[int(scalebywidth)]
+    w2x_full_cmdline = w2x_partial_cmdline + [scale_by, '512', '-i', str(d), '-o', str(d)]
+    subprocess.run(w2x_full_cmdline, encoding='utf-16-le')
 
 
-# conventional scaling
 def _pil_scale(d, scalebywidth=None):
-    pass
+    """*scale all png in ``d`` using Pillow."""
+    # scalebywidth is unused here
+    for fp in d.iterdir():
+        with Image.open(fp) as i:
+            scale_ratio = 512 / max(i.size)
+            final_size = tuple(int(x * scale_ratio) for x in i.size)
+            resized = i.resize(final_size, resample=Image.LANCZOS)
+            resized.save(fp=fp, format='PNG')
 
 
-# optimize png
 def _shrink_png(imgs):
-    pass
+    """Reduce size of all ``img``s specified using Pillow."""
+    for fn in imgs:
+        with Image.open(fn) as i:
+            i.save(fp=fn, format='PNG', optimize=True)
 # endregion
 
 
