@@ -66,7 +66,7 @@ You can take care of all above with this command:
 
 At first launch it will ask you paths to some tools (namely pngquant and waifu2x-caffe), if you prefer not using any of them you can just leave it empty. This saves a yaml-formatted configuration file at ``~/.pytgasu/asu.cfg``.
 
-You need to provide a descriptive name of the set, and an short name that enables you to share it with ``https://t.me/addsticker/<short_name>``.
+You need to provide a descriptive name of the set, and a short name that enables you to share it with ``https://t.me/addsticker/<short_name>``.
 
 Finally open the generated ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
 
@@ -94,11 +94,7 @@ This terminates your session from Telegram and deletes the stored session file a
 
 Limitions & TODOs
 -----------------
-1. It does not help scale up/down if image is not appropriate size.
-    - I can bundle ``waifu2x-caffe``, but that would be a Windows-only feature.
-2. It does not help sink image file size if it is too large.
-    - I will bundle ``pngquant``.
-3. No GUI.
+1. No GUI.
     - Well...I hope you are crazy enough to make one for me ;)
 
 Contributing

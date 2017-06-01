@@ -63,11 +63,8 @@ def _validate_image(image_path):
     :param image_path: The image for a sticker
     :return: Boolean if all limits on stickers met
     """
-    # TODO: ditch PIL
     from PIL.Image import open as pil_open
 
-    # TODO: adjust image instead check only
-    # TODO: having done above, copy to prepare and leave this one check only?
     try:
         with pil_open(image_path) as image:
             criteria = [
@@ -78,4 +75,4 @@ def _validate_image(image_path):
             return True if all(criteria) else False
     except IOError:
         print(ERROR_INVAILD_STICKER_IMAGE % image_path.name)
-        return False  # invalid image or just 404
+        return False  # not a picture or just 404

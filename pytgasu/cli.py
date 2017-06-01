@@ -113,7 +113,6 @@ def prepare(sets):
     for set_dir in sets:
         set_dir = Path(set_dir).resolve()
         PrepareImageFiles(set_dir=set_dir)
-        # TODO: Readme TODO 1 & 2
         SetDefGenerator(set_dir=set_dir)
 
     print(NOTICE_GO_EDIT_DEFS)
@@ -131,6 +130,7 @@ def logout():
 
     from telethon import TelegramClient
     from pytgasu.upload import CustomisedSession
+
     tc = TelegramClient(
         session=CustomisedSession.try_load_or_create_new(),
         api_id=TG_API_ID,
