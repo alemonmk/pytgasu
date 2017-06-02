@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
+from hashlib import md5
 from time import sleep
 from os import urandom
 from ..constants import *
