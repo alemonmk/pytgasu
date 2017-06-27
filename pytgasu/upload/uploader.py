@@ -31,6 +31,10 @@ __all__ = ['upload']
 
 def upload(tc, sets, subscribe=False):
     """Talk to Stickers bot and create the sets."""
+    if not sets:
+        print(ERROR_NO_SET_UPLOAD)
+        return
+
     from functools import partial
     from telethon.tl.functions.messages import SendMessageRequest, SendMediaRequest, InstallStickerSetRequest
     from telethon.tl.types import InputMediaUploadedDocument, DocumentAttributeFilename, InputStickerSetShortName
@@ -39,38 +43,35 @@ def upload(tc, sets, subscribe=False):
     send_bot_cmd = partial(_send_bot_cmd, tc=tc)
     upload_file = partial(_upload_file, tc=tc)
 
-    if sets:
-        # TODO: check if set already created (by anyone), ask to subscribe if set exists
-        send_bot_cmd(SendMessageRequest, message='/cancel')
-        send_bot_cmd(SendMessageRequest, message='/start')
+    # TODO: check if set already created (by anyone), ask to subscribe if set exists
+    send_bot_cmd(SendMessageRequest, message='/cancel')
+    send_bot_cmd(SendMessageRequest, message='/start')
 
-        for _set in sets:
-            set_title, set_short_name, stickers = _set
+    for _set in sets:
+        set_title, set_short_name, stickers = _set
 
-            send_bot_cmd(SendMessageRequest, message='/newpack')
-            send_bot_cmd(SendMessageRequest, message=set_title)
-            for index, (sticker_image, emojis) in enumerate(stickers):
-                uploaded_file = upload_file(sticker_image)
-                uploaded_doc = InputMediaUploadedDocument(
-                    file=uploaded_file,
-                    mime_type='image/png',
-                    attributes=[DocumentAttributeFilename(uploaded_file.name)],
-                    caption='')
-                send_bot_cmd(SendMediaRequest, media=uploaded_doc)
-                send_bot_cmd(SendMessageRequest, message=emojis)
-                print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index + 1, 'total': len(stickers)})
-            send_bot_cmd(SendMessageRequest, message='/publish')
-            send_bot_cmd(SendMessageRequest, message=set_short_name)
-            print(NOTICE_SET_AVAILABLE % {'title': set_title, 'short_name': set_short_name})
+        send_bot_cmd(SendMessageRequest, message='/newpack')
+        send_bot_cmd(SendMessageRequest, message=set_title)
+        for index, (sticker_image, emojis) in enumerate(stickers):
+            uploaded_file = upload_file(sticker_image)
+            uploaded_doc = InputMediaUploadedDocument(
+                file=uploaded_file,
+                mime_type='image/png',
+                attributes=[DocumentAttributeFilename(uploaded_file.name)],
+                caption='')
+            send_bot_cmd(SendMediaRequest, media=uploaded_doc)
+            send_bot_cmd(SendMessageRequest, message=emojis)
+            print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index + 1, 'total': len(stickers)})
+        send_bot_cmd(SendMessageRequest, message='/publish')
+        send_bot_cmd(SendMessageRequest, message=set_short_name)
+        print(NOTICE_SET_AVAILABLE % {'title': set_title, 'short_name': set_short_name})
 
-            if subscribe:
-                result = tc.invoke(
-                    InstallStickerSetRequest(
-                        InputStickerSetShortName(short_name=set_short_name), archived=False))
-                if isinstance(result, StickerSetInstallResultSuccess):
-                    print(NOTICE_SET_SUBSCRIBED % set_title)
-    else:
-        print(ERROR_NO_SET_UPLOAD)
+        if subscribe:
+            result = tc.invoke(
+                InstallStickerSetRequest(
+                    InputStickerSetShortName(short_name=set_short_name), archived=False))
+            if isinstance(result, StickerSetInstallResultSuccess):
+                print(NOTICE_SET_SUBSCRIBED % set_title)
 
 
 def _get_random_id():

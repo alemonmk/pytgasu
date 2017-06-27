@@ -31,15 +31,14 @@ def generate(set_dir):
             set_title = input(PROMPT_SET_TITLE)
         while not set_short_name:
             set_short_name = input(PROMOT_SET_SHORTNAME)
-    except EOFError:
+    except (EOFError, KeyboardInterrupt):
         print(ERROR_EOF_FROM_INPUT)
-        return
+    else:
+        def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.ssd')))
+        with open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
+            f.write('%s\n' % set_title)
+            f.write('%s\n' % set_short_name)
+            for fn in path_set_dir.glob('*.png'):
+                f.write('%s\n' % ''.join([fn.name, '/']))
 
-    def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.ssd')))
-    with open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
-        f.write('%s\n' % set_title)
-        f.write('%s\n' % set_short_name)
-        for fn in path_set_dir.glob('*.png'):
-            f.write('%s\n' % ''.join([fn.name, '/']))
-
-    print(NOTICE_DONE_GENERATE % (path_set_dir.stem, def_file_path))
+        print(NOTICE_DONE_GENERATE % (path_set_dir.stem, def_file_path))
