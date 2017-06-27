@@ -68,7 +68,7 @@ At first launch it will ask you paths to some tools (namely pngquant and waifu2x
 
 You need to provide a descriptive name of the set, and a short name that enables you to share it with ``https://t.me/addsticker/<short_name>``.
 
-Finally open the generated ``.ssd`` file with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
+Finally open the generated ``.ssd`` file(s) with text editor of your choice to assign emojis (and **only** emojis, preferably copied from Telegram).
 
 Upload sticker sets
 +++++++++++++++++++
@@ -76,9 +76,9 @@ Once you are done editing the ``.ssd`` file(s), let ``pytgasu`` do the heavy lif
 
 .. code-block:: bash
 
-    $ pytgasu upload (<dir>|<path_to.ssd>)...
+    $ pytgasu upload [-s] (<dir>|<path_to.ssd>)...
 
-By specifying ``upload -s``, it automatically subscribe to the set once it's uploaded.
+By specifying ``-s``, you will be automatically subscribed to the set once it's uploaded.
 
 You have to log in to Telegram at the first run. A session file will be created at ``~/.pytgasu/asu.session``.
 
@@ -90,7 +90,7 @@ If you have no more business with ``pytgasu``, you may want to log it out from T
 
     $ pytgasu logout
 
-This terminates your session from Telegram and deletes the stored session file and its folder, saving you few clicks in other Telegram client and file manager.
+This terminates your session to Telegram, deletes the stored session file and its folder, saving you few clicks in other Telegram client and file manager.
 
 Limitions & TODOs
 -----------------
