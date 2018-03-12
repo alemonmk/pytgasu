@@ -100,7 +100,9 @@ def upload(paths, s):
 @click.argument(
     'sets', nargs=-1, required=True,
     type=click.Path(exists=True, file_okay=False, writable=True))
-def prepare(sets):
+@click.option('--w2x-cli-path', type=click.Path(exists=True), required=False)
+@click.option('--transparent', nargs=3, type=int, required=False)
+def prepare(sets, w2x_cli_path, transparent):
     """Prepare sticker sets to be uploaded by this tool.
 
     Reads any given directories, process any file Telegram won't accept.
@@ -109,10 +111,10 @@ def prepare(sets):
     # TODO: do first-run configurations to setting paths to executables of pngquant and/or waifu2x
 
     from pytgasu.prepare import SetDefGenerator, PrepareImageFiles
-
+ 
     for set_dir in sets:
         set_dir = Path(set_dir).resolve()
-        PrepareImageFiles(set_dir=set_dir)
+        PrepareImageFiles(set_dir=set_dir, w2x_path=w2x_cli_path, transparent=transparent)
         SetDefGenerator(set_dir=set_dir)
 
     print(NOTICE_GO_EDIT_DEFS)

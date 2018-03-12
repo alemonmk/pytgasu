@@ -15,16 +15,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import pickle
 from pathlib import Path
-from telethon.tl.session import Session
+from telethon.sessions import MemorySession
 from ..constants import *
 
 
-class CustomisedSession(Session):
+class CustomisedSession(MemorySession):
     """
     Override telethon.tl.session for fixed session file path.
     """
     def __init__(self, session_user_id='asu'):
-        super().__init__(session_user_id)
+        super().__init__() #  session_user_id)
         self._session_file_path = Path(PATH_TGSESSION_FILE).expanduser()
 
     def save(self):
