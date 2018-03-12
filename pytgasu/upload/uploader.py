@@ -24,7 +24,6 @@ from telethon.tl.types import InputPeerUser
 # invoke(ResolveUsernameRequest(username='Stickers')) returns
 #   contacts.resolvedPeer = \
 #       (..., users=[(..., id=429000, access_hash=9143715803499997149, username=Stickers, ...)])
-_stickersbot = InputPeerUser(user_id=429000, access_hash=9143715803499997149)
 
 __all__ = ['upload']
 
@@ -40,8 +39,10 @@ def upload(tc, sets, subscribe=False):
     from telethon.tl.types import InputMediaUploadedDocument, DocumentAttributeFilename, InputStickerSetShortName
     from telethon.tl.types.messages import StickerSetInstallResultSuccess
 
-    send_bot_cmd = partial(_send_bot_cmd, tc=tc)
-    upload_file = partial(_upload_file, tc=tc)
+    _stickerbot = tc.get_input_entity('stickers')
+
+    send_bot_cmd = partial(_send_bot_cmd, tc, _stickerbot)
+    upload_file = partial(_upload_file, tc)
 
     # TODO: check if set already created (by anyone), ask to subscribe if set exists
     send_bot_cmd(SendMessageRequest, message='/cancel')
@@ -57,9 +58,8 @@ def upload(tc, sets, subscribe=False):
             uploaded_doc = InputMediaUploadedDocument(
                 file=uploaded_file,
                 mime_type='image/png',
-                attributes=[DocumentAttributeFilename(uploaded_file.name)],
-                caption='')
-            send_bot_cmd(SendMediaRequest, media=uploaded_doc)
+                attributes=[DocumentAttributeFilename(uploaded_file.name)])
+            send_bot_cmd(SendMediaRequest, media=uploaded_doc, message='')
             send_bot_cmd(SendMessageRequest, message=emojis)
             print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index + 1, 'total': len(stickers)})
         send_bot_cmd(SendMessageRequest, message='/publish')
@@ -78,7 +78,7 @@ def _get_random_id():
     return int.from_bytes(urandom(8), signed=True, byteorder='little')
 
 
-def _send_bot_cmd(tc, request, **kwargs):
+def _send_bot_cmd(tc, peer, request, **kwargs):
     """
     An 'interface' to send `MTProtoRequest`s.
 
@@ -87,7 +87,7 @@ def _send_bot_cmd(tc, request, **kwargs):
     :param kwargs: Parameters for the MTProtoRequest
     :return: None
     """
-    tc.invoke(request=request(**kwargs, peer=_stickersbot, random_id=_get_random_id()))
+    tc.invoke(request(**kwargs, peer=peer, random_id=_get_random_id()))
     sleep(1)  # wait for bot reply, but can ignore the content
 
 
@@ -113,6 +113,6 @@ def _upload_file(tc, filepath):
     with open(file, mode='rb') as f:
         for part_index in range(part_count):
             part = f.read(part_size_kb)
-            tc.invoke(request=SaveFilePartRequest(file_id, part_index, part))
+            tc.invoke(SaveFilePartRequest(file_id, part_index, part))
             file_hash.update(part)
     return InputFile(id=file_id, parts=part_count, name=file_name, md5_checksum=file_hash.hexdigest())

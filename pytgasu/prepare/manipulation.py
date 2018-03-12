@@ -1,5 +1,6 @@
 import subprocess
 from enum import Flag
+from functools import partial
 from PIL import Image
 
 __all__ = ['prepare_image_files']
@@ -51,7 +52,7 @@ def _categorise_with_tagging(file_list):
 
 def _move_to_dir_by_tags(src_with_tags, dirs_with_tags):
     # mkdir dst; [file] -> dst/
-    for tag, dst in dirs_with_tags:
+    for tag, dst in dirs_with_tags.items():
         dst.mkdir(exist_ok=False)
         for f in {fp for (fp, ftag) in src_with_tags if ftag == tag}:
             f.rename(dst.joinpath(f.name))
@@ -59,7 +60,7 @@ def _move_to_dir_by_tags(src_with_tags, dirs_with_tags):
 
 def _move_from_dir_with_tags(dirs_with_tags, dst):
     # src/* -> dst/*; rm src/
-    for tag, src in dirs_with_tags:
+    for tag, src in dirs_with_tags.items():
         for f in src.iterdir():
             f.rename(dst.joinpath(f.name))
         src.rmdir()
@@ -67,13 +68,13 @@ def _move_from_dir_with_tags(dirs_with_tags, dst):
 
 
 # region image operations
-def _w2x_upscale(d, scalebywidth):
+def _w2x_upscale(w2x_path, d, scalebywidth):
     """Upscale all png in ``d`` using waifu2x."""
-    path_to_w2x_caffe = ''  # TODO: read from config
+    path_to_w2x_caffe = w2x_path
 
     w2x_std_params = [
         '-l', 'png', '-e', 'png', '-d', '8',
-        '-m', 'noise_scale', '-n', '2',
+        '-m', 'auto_scale', '-n', '2',
         '-p', 'gpu',  # TODO: auto detect
         '-c', '256'
     ]
@@ -92,8 +93,24 @@ def _pil_scale(d, scalebywidth=None):
             scale_ratio = 512 / max(i.size)
             final_size = tuple(int(x * scale_ratio) for x in i.size)
             resized = i.resize(final_size, resample=Image.LANCZOS)
+            
+            
             resized.save(fp=fp, format='PNG')
 
+def _transparentize(d, t):
+    for fp in d.iterdir():
+        with Image.open(fp) as resized:
+            resized = resized.convert('RGBA')
+            datas = resized.getdata()
+            newData = []
+            for item in datas:
+                if item[0] == t[0] and item[1] == t[1] and item[2] == t[2]:
+                    newData.append((255, 255, 255, 0))
+                else:
+                    newData.append(item)
+
+            resized.putdata(newData)
+            resized.save(fp=fp, format='PNG')
 
 def _shrink_png(imgs):
     """Reduce size of all ``img``s specified using Pillow."""
@@ -103,7 +120,7 @@ def _shrink_png(imgs):
 # endregion
 
 
-def prepare_image_files(set_dir):
+def prepare_image_files(set_dir, w2x_path, transparent):
     from pathlib import Path
 
     set_dir = Path(set_dir)
@@ -120,12 +137,18 @@ def prepare_image_files(set_dir):
     _move_to_dir_by_tags(imgs, directories)
 
     from sys import platform
-    _upscale = _w2x_upscale if platform == 'win32' else _pil_scale
-
+ 
+    _upscale = partial(_w2x_upscale, w2x_path)\
+        if platform == 'win32' and w2x_path is not None\
+        else _pil_scale
+    
     _upscale(directories[ProcessTags.UPBYWIDTH], scalebywidth=True)
     _upscale(directories[ProcessTags.UPBYHEIGHT], scalebywidth=False)
     _pil_scale(directories[ProcessTags.DOWNSCALE])
 
     _move_from_dir_with_tags(directories, set_dir)
+
+    if transparent is not None and len(transparent) == 3:
+        _transparentize(set_dir, transparent)
 
     _shrink_png([fn for fn in list(zip(*imgs))[0] if fn.stat().st_size > 350 * 1000])
