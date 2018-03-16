@@ -32,27 +32,27 @@ def parse(def_file):
     try:
         with open(def_file, encoding='utf-8', errors='strict') as f:
             lines = [l.rstrip() for l in f]  # strip line breaks
-            set_title = lines[0]
-            set_short_name = lines[1]
-            stickers = list()  # there may be a 120 stickers per set hard limit, idk
-            for sticker_line in lines[2:]:
-                if not _sticker_line_pattern.fullmatch(sticker_line):
-                    print(ERROR_INCORRECT_STICKER_LINE % sticker_line)
-                    continue
-                image_filename, emoji_seq = sticker_line.split('/')
-                image_path = def_file.with_name(image_filename)
-                if not _validate_image(image_path):
-                    continue
-                if not emoji_seq:
-                    emoji_seq = DEFAULT_EMOJI
-                stickers.append((image_path, emoji_seq))
-            if not stickers:
-                print(ERROR_NO_STICKER_IN_SET)
-                return None
-            return set_title, set_short_name, stickers
     except ValueError:
         print(ERROR_DEFFILE_ENCODING % def_file)
-        return None
+    else:
+        set_title = lines[0]
+        set_short_name = lines[1]
+        stickers = list()  # there may be a 120 stickers per set hard limit, idk
+        for sticker_line in lines[2:]:
+            if not _sticker_line_pattern.fullmatch(sticker_line):
+                print(ERROR_INCORRECT_STICKER_LINE % sticker_line)
+                continue
+            image_filename, emoji_seq = sticker_line.split('/')
+            image_path = def_file.with_name(image_filename)
+            if not _validate_image(image_path):
+                continue
+            if not emoji_seq:
+                emoji_seq = DEFAULT_EMOJI
+            stickers.append((image_path, emoji_seq))
+        if not stickers:
+            print(ERROR_NO_STICKER_IN_SET)
+            return None
+        return set_title, set_short_name, stickers
 
 
 def _validate_image(image_path):
