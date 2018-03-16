@@ -43,7 +43,6 @@ def upload(paths, s):
     from pytgasu.upload import CustomisedSession, SetDefParse, SetUploader
 
     # region Telegram init
-    # TODO: strip Telethon to avoid too much implicit import
     # Probably have to let the 'update' thread stay even we don't need it
     # as ping-pongs prevent server from disconnecting us,
     # but what's the point as we are constantly talking while running this function?
@@ -106,7 +105,6 @@ def prepare(sets):
     Reads any given directories, process any file Telegram won't accept.
     Generates and overwrites existing .ssd file.
     """
-    # TODO: do first-run configurations to setting paths to executables of pngquant and/or waifu2x
 
     from pytgasu.prepare import SetDefGenerator, PrepareImageFiles
 
@@ -139,6 +137,7 @@ def logout():
     # I guess even if user is not authorised, invoking LogOutRequest does not cause problems
     tc.log_out()
     Path(PATH_TGSESSION_FILE).parent.unlink()
+
 
 if __name__ == "__main__":
     cli()

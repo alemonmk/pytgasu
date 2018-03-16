@@ -69,12 +69,12 @@ def _move_from_dir_with_tags(dirs_with_tags, dst):
 # region image operations
 def _w2x_upscale(d, scalebywidth):
     """Upscale all png in ``d`` using waifu2x."""
-    path_to_w2x_caffe = ''  # TODO: read from config
+    path_to_w2x_caffe = ''
 
     w2x_std_params = [
         '-l', 'png', '-e', 'png', '-d', '8',
         '-m', 'noise_scale', '-n', '2',
-        '-p', 'gpu',  # TODO: auto detect
+        '-p', 'gpu',
         '-c', '256'
     ]
     w2x_partial_cmdline = [path_to_w2x_caffe] + w2x_std_params
@@ -107,7 +107,6 @@ def prepare_image_files(set_dir):
     from pathlib import Path
 
     set_dir = Path(set_dir)
-    # TODO: include bmp & jpg support
     imgs = sorted(set_dir.glob('*.png'))
     imgs = [(p, d) for p, d in zip(imgs, [_get_img_dimensions(fn) for fn in imgs]) if d]
     imgs = _categorise_with_tagging(imgs)

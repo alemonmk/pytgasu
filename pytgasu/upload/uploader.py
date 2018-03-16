@@ -43,7 +43,6 @@ def upload(tc, sets, subscribe=False):
     send_bot_cmd = partial(_send_bot_cmd, tc=tc)
     upload_file = partial(_upload_file, tc=tc)
 
-    # TODO: check if set already created (by anyone), ask to subscribe if set exists
     send_bot_cmd(SendMessageRequest, message='/cancel')
     send_bot_cmd(SendMessageRequest, message='/start')
 
