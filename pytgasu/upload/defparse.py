@@ -58,7 +58,7 @@ def parse(def_file):
 def _validate_image(image_path):
     """
     Check file existence, image is correct PNG,
-        dimension is 512x? or ?x512 and file size < 350KB
+        dimension is 512x? or ?x512 and file size < 512KB
 
     :param image_path: The image for a sticker
     :return: Boolean if all limits on stickers met
@@ -70,7 +70,7 @@ def _validate_image(image_path):
             criteria = [
                 max(image.size) == 512,
                 image.format == 'PNG',
-                image_path.stat().st_size < 350 * 1000
+                image_path.stat().st_size < 512 * 1000
             ]
             return True if all(criteria) else False
     except IOError:

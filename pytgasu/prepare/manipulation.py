@@ -127,4 +127,4 @@ def prepare_image_files(set_dir):
 
     _move_from_dir_with_tags(directories, set_dir)
 
-    _shrink_png([fn for fn in list(zip(*imgs))[0] if fn.stat().st_size > 350 * 1000])
+    _shrink_png([fn for fn in list(zip(*imgs))[0] if fn.stat().st_size > 512 * 1000])
