@@ -52,16 +52,23 @@ def _categorise_with_tagging(file_list):
 def _move_to_dir_by_tags(src_with_tags, dirs_with_tags):
     # mkdir dst; [file] -> dst/
     for tag, dst in dirs_with_tags.items():
-        dst.mkdir(exist_ok=False)
+        try:
+            dst.mkdir()
+        except FileExistsError:
+            for f in dst.iterdir():
+                f.unlink()
         for f in {fp for (fp, ftag) in src_with_tags if ftag == tag}:
             f.rename(dst.joinpath(f.name))
 
 
 def _move_from_dir_with_tags(dirs_with_tags, dst):
-    # src/* -> dst/*; rm src/
+    # rm *.(bmp|jpg); src/* -> dst/*; rm src/
     for tag, src in dirs_with_tags.items():
         for f in src.iterdir():
-            f.rename(dst.joinpath(f.name))
+            if f.suffix in ['bmp', 'jpg']:
+                f.unlink()
+            else:
+                f.rename(dst.joinpath(f.name))
         src.rmdir()
 # endregion
 
