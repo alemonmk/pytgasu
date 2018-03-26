@@ -34,7 +34,7 @@ def generate(set_dir):
     except (EOFError, KeyboardInterrupt):
         print(ERROR_EOF_FROM_INPUT)
     else:
-        def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.ssd')))
+        def_file_path = path_set_dir.joinpath(''.join((set_short_name, '.def')))
         with open(def_file_path, mode='w', encoding='utf-8', errors='strict') as f:
             f.write('%s\n' % set_title)
             f.write('%s\n' % set_short_name)

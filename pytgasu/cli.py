@@ -61,10 +61,10 @@ def upload(paths, s):
         path = Path(setpath).resolve()
         set_def_tuple = ()
         if path.is_dir():
-            for d in path.glob('*.ssd'):
+            for d in path.glob('*.def'):
                 set_def_tuple = SetDefParse(d)  # only process one
                 break
-        elif path.suffix == '.ssd':
+        elif path.suffix == '.def':
             set_def_tuple = SetDefParse(path)
         if set_def_tuple:
             sticker_sets.append(set_def_tuple)
@@ -83,7 +83,7 @@ def prepare(sets):
     """Prepare sticker sets to be uploaded by this tool.
 
     Reads any given directories, process any file Telegram won't accept.
-    Generates and overwrites existing .ssd file.
+    Generates and overwrites existing .def file.
     """
 
     from pytgasu.prepare import SetDefGenerator, PrepareImageFiles
