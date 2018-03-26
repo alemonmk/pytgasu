@@ -12,7 +12,7 @@ Better yet, it makes sticker sets kind of "distributable" and "installable".
 
 Motivation
 ----------
-There does is a `Telegram Stickers Uploader <http://telegramsu.lostberry.com/>`_, but:
+There was a `Telegram Stickers Uploader <http://telegramsu.lostberry.com/>`_ (link dead, don't bother), but:
 
 1. It has limited choices of emojis
     - Well, 250. Really? This is not enough. UTR #51 4.0 defined 910 code points with Emoji_Presentation=Yes.
