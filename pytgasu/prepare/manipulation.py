@@ -67,7 +67,7 @@ def _move_from_dir_with_tags(dirs_with_tags, dst):
 
 
 # region image operations
-def _w2x_upscale(d, scalebywidth):
+def _w2x_upscale(d, scale_by_width):
     """Upscale all png in ``d`` using waifu2x."""
     path_to_w2x_caffe = ''
 
@@ -79,14 +79,14 @@ def _w2x_upscale(d, scalebywidth):
     ]
     w2x_partial_cmdline = [path_to_w2x_caffe] + w2x_std_params
 
-    scale_by = ('-h', '-w')[int(scalebywidth)]
+    scale_by = ('-h', '-w')[int(scale_by_width)]
     w2x_full_cmdline = w2x_partial_cmdline + [scale_by, '512', '-i', str(d), '-o', str(d)]
     subprocess.run(w2x_full_cmdline, encoding='utf-16-le')
 
 
-def _pil_scale(d, scalebywidth=None):
+def _pil_scale(d, scale_by_width=None):
     """*scale all png in ``d`` using Pillow."""
-    # scalebywidth is unused here
+    # scale_by_width is unused here
     for fp in d.iterdir():
         with Image.open(fp) as i:
             scale_ratio = 512 / max(i.size)
@@ -121,8 +121,8 @@ def prepare_image_files(set_dir):
     from sys import platform
     _upscale = _w2x_upscale if platform == 'win32' else _pil_scale
 
-    _upscale(directories[ProcessTags.UPBYWIDTH], scalebywidth=True)
-    _upscale(directories[ProcessTags.UPBYHEIGHT], scalebywidth=False)
+    _upscale(directories[ProcessTags.UPBYWIDTH], scale_by_width=True)
+    _upscale(directories[ProcessTags.UPBYHEIGHT], scale_by_width=False)
     _pil_scale(directories[ProcessTags.DOWNSCALE])
 
     _move_from_dir_with_tags(directories, set_dir)
