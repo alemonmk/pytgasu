@@ -21,11 +21,6 @@ PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
 # telegram specified
 TG_API_ID = 173590
 TG_API_HASH = "9b05a9d53a77019aa1d615f27776e60f"
-PROMPT_ON_FIRST_LAUNCH = "It's your first run of this program, please login first.\n" \
-                         "Login session will be preserved, you don't need to login next time."
-PROMPT_PHONE_NUMBER = 'Your phone number -> '
-PROMPT_LOGIN_CODE = 'Enter the login code -> '
-PROMPT_2FA_PASSWORD = 'Two step verification is enabled. Please enter your password -> '
 
 # upload
 ERROR_NO_SET_UPLOAD = 'No sticker set need to be uploaded, aborting.'

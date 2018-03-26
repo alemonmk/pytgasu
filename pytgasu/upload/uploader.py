@@ -15,7 +15,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
 from hashlib import md5
-from os import urandom
 from ..constants import *
 
 from telethon.tl.types import InputPeerUser
@@ -63,10 +62,6 @@ def upload(tc, sets, subscribe=False):
                 print(NOTICE_SET_SUBSCRIBED % set_title)
 
 
-def _get_random_id():
-    return int.from_bytes(urandom(8), signed=True, byteorder='little')
-
-
 def _send_bot_cmd(tc, msg=None, file=None):
     """
     An 'interface' to talk to @Stickers.
@@ -98,30 +93,3 @@ def _send_bot_cmd(tc, msg=None, file=None):
         for m in msg:
             res = tc.send_message(entity=_stickersbot, message=m)
             wait_for_reply()
-
-
-def _upload_file(tc, filepath):
-    """
-    Upload a file to Telegram cloud.
-    Stolen from telethon.TelegramClient.upload_file().
-    Specialised for upload sticker images.
-
-    :param tc: A TelegramClient
-    :param filepath: A path-like object
-    :return: An InputFile handle.
-    """
-    from telethon.tl.types import InputFile
-    from telethon.tl.functions.upload import SaveFilePartRequest
-
-    file = Path(filepath)
-    file_id = _get_random_id()
-    file_name = file.name
-    part_size_kb = 32 * 1024  # just hardcode it, every file is under 350KB anyways
-    part_count = (file.stat().st_size + part_size_kb - 1) // part_size_kb
-    file_hash = md5()
-    with open(file, mode='rb') as f:
-        for part_index in range(part_count):
-            part = f.read(part_size_kb)
-            tc.invoke(request=SaveFilePartRequest(file_id, part_index, part))
-            file_hash.update(part)
-    return InputFile(id=file_id, parts=part_count, name=file_name, md5_checksum=file_hash.hexdigest())
