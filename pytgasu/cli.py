@@ -16,7 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
 import click
+
 from pytgasu.constants import *
+from pytgasu import __version__
 
 
 @click.group()
@@ -37,41 +39,19 @@ def upload(paths, s):
         1. directories with a .ssd (sticker set definitions) file, or
         2. .ssd files themselves
     """
-    import logging
     from telethon import TelegramClient
-    from telethon.errors import RPCError
-    from pytgasu.upload import CustomisedSession, SetDefParse, SetUploader
+    from pytgasu.upload import SetDefParse, SetUploader
 
     # region Telegram init
-    # Probably have to let the 'update' thread stay even we don't need it
-    # as ping-pongs prevent server from disconnecting us,
-    # but what's the point as we are constantly talking while running this function?
+    Path(PATH_TGSESSION_FILE).expanduser().parent.mkdir(exist_ok=True)
+
     tc = TelegramClient(
-        session=CustomisedSession.try_load_or_create_new(),
+        session=str(Path(PATH_TGSESSION_FILE).expanduser()),
         api_id=TG_API_ID,
-        api_hash=TG_API_HASH)
-    logging.getLogger('TelethonLogger').setLevel(logging.ERROR)  # suppress logging from telethon
-
-    # Stolen from telethon.InteractiveTelegramClient :P
-    tc.connect()
-    if not tc.is_user_authorized():
-        print(PROMPT_ON_FIRST_LAUNCH)
-        user_phone = input(PROMPT_PHONE_NUMBER)
-        tc.send_code_request(user_phone)
-        code_ok = False
-        while not code_ok:
-            code = input(PROMPT_LOGIN_CODE)
-            try:
-                code_ok = tc.sign_in(user_phone, code)
-
-            # Two-step verification may be enabled
-            except RPCError as e:
-                from getpass import getpass
-                if e.password_required:
-                    pw = getpass(PROMPT_2FA_PASSWORD)
-                    code_ok = tc.sign_in(password=pw)
-                else:
-                    raise e
+        api_hash=TG_API_HASH,
+        update_workers=0,
+        app_version=__version__)
+    tc.start()
     # endregion
 
     # region Set list init
@@ -127,16 +107,16 @@ def logout():
         return
 
     from telethon import TelegramClient
-    from pytgasu.upload import CustomisedSession
 
     tc = TelegramClient(
-        session=CustomisedSession.try_load_or_create_new(),
+        session=str(Path(PATH_TGSESSION_FILE).expanduser()),
         api_id=TG_API_ID,
-        api_hash=TG_API_HASH)
+        api_hash=TG_API_HASH,
+        update_workers=None,
+        spawn_read_thread=False,
+        app_version=__version__)
     tc.connect()
-    # I guess even if user is not authorised, invoking LogOutRequest does not cause problems
     tc.log_out()
-    Path(PATH_TGSESSION_FILE).parent.unlink()
 
 
 if __name__ == "__main__":
