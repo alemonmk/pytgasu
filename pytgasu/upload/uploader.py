@@ -15,11 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from pathlib import Path
 from hashlib import md5
-from time import sleep
 from os import urandom
 from ..constants import *
 
 from telethon.tl.types import InputPeerUser
+
 # it only talks to @Stickers, so just hardcode it
 # invoke(ResolveUsernameRequest(username='Stickers')) returns
 #   contacts.resolvedPeer = \
@@ -36,33 +36,23 @@ def upload(tc, sets, subscribe=False):
         return
 
     from functools import partial
-    from telethon.tl.functions.messages import SendMessageRequest, SendMediaRequest, InstallStickerSetRequest
-    from telethon.tl.types import InputMediaUploadedDocument, DocumentAttributeFilename, InputStickerSetShortName
+    from telethon.tl.functions.messages import InstallStickerSetRequest
+    from telethon.tl.types import InputStickerSetShortName
     from telethon.tl.types.messages import StickerSetInstallResultSuccess
 
-    send_bot_cmd = partial(_send_bot_cmd, tc=tc)
-    upload_file = partial(_upload_file, tc=tc)
+    send_bot_cmd = partial(_send_bot_cmd, tc)
 
-    send_bot_cmd(SendMessageRequest, message='/cancel')
-    send_bot_cmd(SendMessageRequest, message='/start')
+    send_bot_cmd(msg=['/cancel', '/start'])
 
     for _set in sets:
         set_title, set_short_name, stickers = _set
 
-        send_bot_cmd(SendMessageRequest, message='/newpack')
-        send_bot_cmd(SendMessageRequest, message=set_title)
+        send_bot_cmd(msg=['/newpack', set_title])
         for index, (sticker_image, emojis) in enumerate(stickers):
-            uploaded_file = upload_file(sticker_image)
-            uploaded_doc = InputMediaUploadedDocument(
-                file=uploaded_file,
-                mime_type='image/png',
-                attributes=[DocumentAttributeFilename(uploaded_file.name)],
-                caption='')
-            send_bot_cmd(SendMediaRequest, media=uploaded_doc)
-            send_bot_cmd(SendMessageRequest, message=emojis)
-            print(NOTICE_UPLOADED % {'fn': uploaded_file.name, 'cur': index + 1, 'total': len(stickers)})
-        send_bot_cmd(SendMessageRequest, message='/publish')
-        send_bot_cmd(SendMessageRequest, message=set_short_name)
+            send_bot_cmd(file=sticker_image)
+            send_bot_cmd(msg=emojis)
+            print(NOTICE_UPLOADED % {'fn': sticker_image.name, 'cur': index + 1, 'total': len(stickers)})
+        send_bot_cmd(msg=['/publish', set_short_name])
         print(NOTICE_SET_AVAILABLE % {'title': set_title, 'short_name': set_short_name})
 
         if subscribe:
@@ -77,17 +67,37 @@ def _get_random_id():
     return int.from_bytes(urandom(8), signed=True, byteorder='little')
 
 
-def _send_bot_cmd(tc, request, **kwargs):
+def _send_bot_cmd(tc, msg=None, file=None):
     """
-    An 'interface' to send `MTProtoRequest`s.
+    An 'interface' to talk to @Stickers.
 
     :param tc: A TelegramClient
-    :param request: An MTProtoRequest
-    :param kwargs: Parameters for the MTProtoRequest
+    :param msg: Bot command string(s), supply a list if you are sending multiple
+    :param file: Path-like object to a file
     :return: None
     """
-    tc.invoke(request=request(**kwargs, peer=_stickersbot, random_id=_get_random_id()))
-    sleep(1)  # wait for bot reply, but can ignore the content
+    def wait_for_reply():
+        from telethon.tl.functions.messages import ReadHistoryRequest
+        from telethon.tl.types import UpdateNewMessage
+        while True:
+            update = tc.updates.poll(timeout=5)
+            if not update:
+                continue
+
+            if all([isinstance(update, UpdateNewMessage),
+                    update.message.from_id == _stickersbot.user_id,
+                    update.message.date > res.date]):
+                tc.invoke(ReadHistoryRequest(peer=_stickersbot, max_id=update.message.id))
+
+    if file:
+        res = tc.send_message(entity=_stickersbot, file=str(file), force_document=True)
+        wait_for_reply()
+    else:
+        if isinstance(msg, str):
+            msg = list(msg)
+        for m in msg:
+            res = tc.send_message(entity=_stickersbot, message=m)
+            wait_for_reply()
 
 
 def _upload_file(tc, filepath):
