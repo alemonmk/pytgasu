@@ -21,9 +21,9 @@ class ProcessTags(Flag):
 def _get_img_dimensions(fn):
     try:
         with Image.open(fn) as image:
-            return image.size if image.format == 'PNG' else False
+            return image.size
     except IOError:
-        return False  # not a picture or just 404
+        return None  # not a picture or just 404
 
 
 def _categorise_with_tagging(file_list):
@@ -72,7 +72,7 @@ def _w2x_upscale(d, scalebywidth):
     path_to_w2x_caffe = ''
 
     w2x_std_params = [
-        '-l', 'png', '-e', 'png', '-d', '8',
+        '-l', 'png:bmp:jpg', '-e', 'png', '-d', '8',
         '-m', 'noise_scale', '-n', '2',
         '-p', 'gpu',
         '-c', '256'
@@ -107,7 +107,7 @@ def prepare_image_files(set_dir):
     from pathlib import Path
 
     set_dir = Path(set_dir)
-    imgs = sorted(set_dir.glob('*.png'))
+    imgs = sorted([set_dir.glob(f'*.{fmt}') for fmt in ['png', 'bmp', 'jpg']])
     imgs = [(p, d) for p, d in zip(imgs, [_get_img_dimensions(fn) for fn in imgs]) if d]
     imgs = _categorise_with_tagging(imgs)
 
