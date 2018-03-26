@@ -107,7 +107,7 @@ def prepare_image_files(set_dir):
     from pathlib import Path
 
     set_dir = Path(set_dir)
-    imgs = sorted([set_dir.glob(f'*.{fmt}') for fmt in ['png', 'bmp', 'jpg']])
+    imgs = sum([sorted(set_dir.glob(f'*.{fmt}')) for fmt in ['png', 'bmp', 'jpg']], [])
     imgs = [(p, d) for p, d in zip(imgs, [_get_img_dimensions(fn) for fn in imgs]) if d]
     imgs = _categorise_with_tagging(imgs)
 
