@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # config
-PATH_CONFIG_FOLDER = '~/.pytgasu/asu.cfg'
+PATH_CONFIG_FILE = '~/.pytgasu/asu.cfg'
 PATH_TGSESSION_FILE = '~/.pytgasu/asu.session'
 
 # telegram specified
