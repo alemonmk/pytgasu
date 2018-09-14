@@ -23,7 +23,6 @@ from telethon.tl.types import InputPeerUser
 # invoke(ResolveUsernameRequest(username='Stickers')) returns
 #   contacts.resolvedPeer = \
 #       (..., users=[(..., id=429000, access_hash=9143715803499997149, username=Stickers, ...)])
-_stickersbot = InputPeerUser(user_id=429000, access_hash=9143715803499997149)
 
 __all__ = ['upload']
 
@@ -39,7 +38,7 @@ def upload(tc, sets, subscribe=False):
     from telethon.tl.types import InputStickerSetShortName
     from telethon.tl.types.messages import StickerSetInstallResultSuccess
 
-    send_bot_cmd = partial(_send_bot_cmd, tc)
+    send_bot_cmd = partial(_send_bot_cmd, tc, tc.get_input_entity('stickers'))
 
     send_bot_cmd(msg=['/cancel', '/start'])
 
@@ -62,7 +61,7 @@ def upload(tc, sets, subscribe=False):
                 print(NOTICE_SET_SUBSCRIBED % set_title)
 
 
-def _send_bot_cmd(tc, msg=None, file=None):
+def _send_bot_cmd(tc, bot_entity, msg=None, file=None):
     """
     An 'interface' to talk to @Stickers.
 
@@ -80,16 +79,16 @@ def _send_bot_cmd(tc, msg=None, file=None):
                 continue
 
             if all([isinstance(update, UpdateNewMessage),
-                    update.message.from_id == _stickersbot.user_id,
+                    update.message.from_id == bot_entity.user_id,
                     update.message.date > res.date]):
-                tc.invoke(ReadHistoryRequest(peer=_stickersbot, max_id=update.message.id))
+                tc.invoke(ReadHistoryRequest(peer=bot_entity, max_id=update.message.id))
 
     if file:
-        res = tc.send_message(entity=_stickersbot, file=str(file), force_document=True)
+        res = tc.send_message(entity=bot_entity, file=str(file), force_document=True)
         wait_for_reply()
     else:
         if isinstance(msg, str):
             msg = list(msg)
         for m in msg:
-            res = tc.send_message(entity=_stickersbot, message=m)
+            res = tc.send_message(entity=bot_entity, message=m)
             wait_for_reply()
